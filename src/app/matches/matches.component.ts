@@ -278,9 +278,9 @@ export class MatchesComponent implements OnInit {
     return 'danger'; // 9-10
   }
 
-  getRpeVariant(rpe: number): 'success' | 'warning' | 'danger' | 'neutral' {
+  getRpeVariant(rpe: number): 'success' | 'warn' | 'danger' | 'neutral' {
     if (rpe <= 4) return 'success';
-    if (rpe <= 6) return 'warning';
+    if (rpe <= 6) return 'warn';
     if (rpe <= 8) return 'danger';
     return 'danger'; // 9-10
   }

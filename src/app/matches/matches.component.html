@@ -89,7 +89,7 @@
               </span>
             </label>
             <label class="radio-option">
-              <input type="radio" name="matchType" value="doppio" [(ngModel)]="formData.matchType">
+              <input type="radio" name="matchType" value="doppio" [(ngModel)]="formData.matchType" (ngModelChange)="onMatchTypeChange()">
               <span class="radio-label">
                 <lucide-angular name="users" [size]="16"></lucide-angular>
                 Doppio
@@ -160,11 +160,6 @@
       </div>
 
       <div class="form-group">
-        <label>Focus (1-10)</label>
-        <tp-rating-slider [(ngModel)]="formData.focus" name="focus" [min]="1" [max]="10"></tp-rating-slider>
-      </div>
-
-      <div class="form-group">
         <label>Note</label>
         <textarea [(ngModel)]="formData.notes" name="notes" rows="3"></textarea>
       </div>
@@ -185,7 +180,12 @@
             {{ match.outcome === 'W' ? 'V' : 'S' }}
           </tp-badge>
           <div class="match-info">
-            <h3 class="match-title">vs {{ match.opponentName }}</h3>
+            <h3 class="match-title">
+              vs {{ match.opponentName }}
+              <span *ngIf="(match.matchType || 'singolare') === 'doppio' && match.partnerName" class="partner-info">
+                <span class="with-partner">con {{ match.partnerName }}</span>
+              </span>
+            </h3>
             <p class="match-date">
               <lucide-angular name="calendar" [size]="14"></lucide-angular>
               {{ formatDate(match.date) }}
