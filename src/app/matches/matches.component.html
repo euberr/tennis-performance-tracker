@@ -101,6 +101,28 @@
 
       <div class="form-row">
         <div class="form-group">
+          <label>Formato Partita</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="matchFormat" value="one_set" [(ngModel)]="formData.matchFormat">
+              <span class="radio-label">
+                <lucide-angular name="hash" [size]="16"></lucide-angular>
+                1 set
+              </span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="matchFormat" value="two_sets" [(ngModel)]="formData.matchFormat">
+              <span class="radio-label">
+                <lucide-angular name="hash" [size]="16"></lucide-angular>
+                2 set
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
           <label>Risultato</label>
           <select [(ngModel)]="formData.outcome" name="outcome">
             <option value="W">Vittoria</option>
@@ -193,6 +215,17 @@
                 <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
                 {{ getMatchTypeName(match.matchType) }}
               </span>
+              <span class="match-format-badge" *ngIf="match.matchFormat">
+                <tp-badge variant="neutral" class="format-badge">
+                  {{ getMatchFormatName(match.matchFormat) }}
+                </tp-badge>
+              </span>
+              <span class="training-badge" *ngIf="isTrainingMatch(match)">
+                <tp-badge variant="primary" class="training-indicator">
+                  <lucide-angular name="dumbbell" [size]="12"></lucide-angular>
+                  Allenamento
+                </tp-badge>
+              </span>
             </p>
           </div>
         </div>
@@ -220,8 +253,27 @@
           </span>
         </div>
         <div class="detail-row">
+          <span class="detail-label">Formato:</span>
+          <span class="detail-value">
+            <tp-badge variant="neutral">
+              {{ getMatchFormatName(match.matchFormat) }}
+            </tp-badge>
+            <span class="duration-estimate">(Durata stimata: {{ getEstimatedDuration(match) }} min)</span>
+          </span>
+        </div>
+        <div class="detail-row">
           <span class="detail-label">Superficie:</span>
           <span class="detail-value">{{ getSurfaceName(match.surface) }}</span>
+        </div>
+        <div class="detail-row" *ngIf="isTrainingMatch(match)">
+          <span class="detail-label">Tipo:</span>
+          <span class="detail-value">
+            <tp-badge variant="primary">
+              <lucide-angular name="dumbbell" [size]="12"></lucide-angular>
+              Allenamento
+            </tp-badge>
+            <span class="training-explanation">(Partita fuori torneo conteggiata come allenamento)</span>
+          </span>
         </div>
         <div class="detail-row">
           <span class="detail-label">Torneo:</span>

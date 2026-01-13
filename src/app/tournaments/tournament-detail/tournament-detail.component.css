@@ -179,6 +179,24 @@
   margin-left: var(--spacing-xs);
 }
 
+/* Badge formato partita */
+.match-format-badge {
+  display: inline-block;
+  margin-left: var(--spacing-sm);
+}
+
+.format-badge {
+  font-size: 0.7rem;
+}
+
+/* Durata stimata */
+.duration-estimate {
+  font-size: 0.75rem;
+  color: var(--neutral-gray);
+  margin-left: var(--spacing-xs);
+  font-style: italic;
+}
+
 /* btn-secondary ora in styles.css - aggiungo solo override specifico se necessario */
 .btn-secondary {
   margin-top: var(--spacing-md);

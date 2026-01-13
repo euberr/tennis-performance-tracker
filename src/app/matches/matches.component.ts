@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { StorageService } from '../core/storage.service';
-import { Match } from '../core/models/match.model';
+import { Match, getEstimatedDurationMinutes } from '../core/models/match.model';
 import { Tournament } from '../core/models/tournament.model';
 import { TpCardComponent } from '../shared/ui/tp-card/tp-card.component';
 import { TpBadgeComponent } from '../shared/ui/tp-badge/tp-badge.component';
@@ -44,6 +44,7 @@ export class MatchesComponent implements OnInit {
     surface: 'hard',
     matchType: 'singolare',
     partnerName: '',
+    matchFormat: 'two_sets', // Default: 2 set
     score: [],
     outcome: 'W',
     performanceScore: 5,
@@ -97,10 +98,11 @@ export class MatchesComponent implements OnInit {
       
       // Then load matches
       this.storageService.getMatches().subscribe(matches => {
-        // Retrocompatibilità: assegna 'singolare' se matchType mancante
+        // Retrocompatibilità: assegna default se mancanti
         this.matches = matches.map(match => ({
           ...match,
-          matchType: match.matchType || 'singolare'
+          matchType: match.matchType || 'singolare',
+          matchFormat: match.matchFormat || 'two_sets' // Default: 2 set per retrocompatibilità
         })).sort((a, b) => 
           new Date(b.date).getTime() - new Date(a.date).getTime()
         );
@@ -148,6 +150,7 @@ export class MatchesComponent implements OnInit {
       surface: 'hard',
       matchType: 'singolare',
       partnerName: '',
+      matchFormat: 'two_sets', // Default: 2 set
       score: [],
       outcome: 'W',
       performanceScore: 5,
@@ -165,7 +168,8 @@ export class MatchesComponent implements OnInit {
     this.editingMatch = match;
     this.formData = { 
       ...match,
-      matchType: match.matchType || 'singolare' // Retrocompatibilità
+      matchType: match.matchType || 'singolare', // Retrocompatibilità
+      matchFormat: match.matchFormat || 'two_sets' // Retrocompatibilità
     };
     this.newScoreSet = '';
     this.showForm = true;
@@ -207,6 +211,7 @@ export class MatchesComponent implements OnInit {
       surface: this.formData.surface || 'hard',
       matchType: this.formData.matchType || 'singolare',
       partnerName: this.formData.matchType === 'doppio' ? (this.formData.partnerName || undefined) : undefined,
+      matchFormat: this.formData.matchFormat || 'two_sets',
       score: this.formData.score || [],
       outcome: this.formData.outcome || 'W',
       performanceScore: this.formData.performanceScore || 5,
@@ -290,5 +295,17 @@ export class MatchesComponent implements OnInit {
     if (this.formData.matchType !== 'doppio') {
       this.formData.partnerName = '';
     }
+  }
+
+  getMatchFormatName(matchFormat?: string): string {
+    return matchFormat === 'one_set' ? '1 set' : '2 set';
+  }
+
+  getEstimatedDuration(match: Match): number {
+    return getEstimatedDurationMinutes(match.matchFormat);
+  }
+
+  isTrainingMatch(match: Match): boolean {
+    return !match.tournamentId;
   }
 }

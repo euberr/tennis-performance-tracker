@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { StorageService } from '../../core/storage.service';
 import { Tournament } from '../../core/models/tournament.model';
-import { Match } from '../../core/models/match.model';
+import { Match, getEstimatedDurationMinutes } from '../../core/models/match.model';
 import { TpCardComponent } from '../../shared/ui/tp-card/tp-card.component';
 import { TpBadgeComponent } from '../../shared/ui/tp-badge/tp-badge.component';
 import { TpEmptyStateComponent } from '../../shared/ui/tp-empty-state/tp-empty-state.component';
@@ -55,10 +55,11 @@ export class TournamentDetailComponent implements OnInit {
 
   loadMatches(tournamentId: string): void {
     this.storageService.getMatchesByTournament(tournamentId).subscribe(matches => {
-      // Retrocompatibilità: assegna 'singolare' se matchType mancante
+      // Retrocompatibilità: assegna default se mancanti
       this.matches = matches.map(match => ({
         ...match,
-        matchType: match.matchType || 'singolare'
+        matchType: match.matchType || 'singolare',
+        matchFormat: match.matchFormat || 'two_sets' // Default: 2 set per retrocompatibilità
       })).sort((a, b) => 
         new Date(b.date).getTime() - new Date(a.date).getTime()
       );
@@ -121,5 +122,13 @@ export class TournamentDetailComponent implements OnInit {
     if (rpe <= 6) return 'warn';
     if (rpe <= 8) return 'danger';
     return 'danger'; // 9-10
+  }
+
+  getMatchFormatName(matchFormat?: string): string {
+    return matchFormat === 'one_set' ? '1 set' : '2 set';
+  }
+
+  getEstimatedDuration(match: Match): number {
+    return getEstimatedDurationMinutes(match.matchFormat);
   }
 }

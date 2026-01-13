@@ -313,6 +313,42 @@
   margin-left: var(--spacing-xs);
 }
 
+/* Badge formato partita */
+.match-format-badge {
+  display: inline-block;
+  margin-left: var(--spacing-sm);
+}
+
+.format-badge {
+  font-size: 0.7rem;
+}
+
+/* Badge allenamento */
+.training-badge {
+  display: inline-block;
+  margin-left: var(--spacing-sm);
+}
+
+.training-indicator {
+  font-size: 0.7rem;
+}
+
+/* Durata stimata */
+.duration-estimate {
+  font-size: 0.75rem;
+  color: var(--neutral-gray);
+  margin-left: var(--spacing-xs);
+  font-style: italic;
+}
+
+/* Spiegazione allenamento */
+.training-explanation {
+  font-size: 0.75rem;
+  color: var(--neutral-gray);
+  margin-left: var(--spacing-xs);
+  font-style: italic;
+}
+
 /* form-actions, btn-primary, btn-secondary ora in styles.css */
 
 .matches-list {

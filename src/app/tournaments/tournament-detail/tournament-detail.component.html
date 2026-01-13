@@ -75,6 +75,11 @@
                     <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
                     {{ getMatchTypeName(match.matchType) }}
                   </span>
+                  <span class="match-format-badge" *ngIf="match.matchFormat">
+                    <tp-badge variant="neutral" class="format-badge">
+                      {{ getMatchFormatName(match.matchFormat) }}
+                    </tp-badge>
+                  </span>
                 </p>
               </div>
             </div>
@@ -95,6 +100,15 @@
                   <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
                   {{ getMatchTypeName(match.matchType) }}
                 </tp-badge>
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Formato:</span>
+              <span class="detail-value">
+                <tp-badge variant="neutral">
+                  {{ getMatchFormatName(match.matchFormat) }}
+                </tp-badge>
+                <span class="duration-estimate">(Durata stimata: {{ getEstimatedDuration(match) }} min)</span>
               </span>
             </div>
             <div class="detail-row" *ngIf="(match.matchType || 'singolare') === 'doppio' && match.partnerName">

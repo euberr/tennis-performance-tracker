@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { StorageService } from '../core/storage.service';
-import { Match } from '../core/models/match.model';
+import { Match, getEstimatedDurationMinutes } from '../core/models/match.model';
 import { TrainingSession } from '../core/models/training-session.model';
 import { DailyMetrics } from '../core/models/daily-metrics.model';
 import { MetricCardComponent } from '../shared/components/metric-card/metric-card.component';
@@ -45,10 +45,16 @@ export class DashboardComponent implements OnInit {
     this.storageService.getMatches().subscribe(matches => {
       this.matches = matches;
       this.calculateMatchStats();
+      // Ricalcola training stats se i training sono già caricati
+      // (perché ora includono anche le partite senza torneo)
+      if (this.trainingSessions.length > 0 || this.matches.length > 0) {
+        this.calculateTrainingStats();
+      }
     });
 
     this.storageService.getTrainingSessions().subscribe(sessions => {
       this.trainingSessions = sessions;
+      // Ricalcola sempre perché ora dipende anche dai match
       this.calculateTrainingStats();
     });
 
@@ -86,21 +92,46 @@ export class DashboardComponent implements OnInit {
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
+    // Filtra sessioni di allenamento degli ultimi 7 giorni
     const recentSessions = this.trainingSessions.filter(s => {
       const sessionDate = new Date(s.date);
       return sessionDate >= weekAgo;
     });
 
-    this.weeklyTrainingHours = Math.round(
-      recentSessions.reduce((sum, s) => sum + s.durationMin, 0) / 60 * 10
-    ) / 10;
+    // Filtra partite senza torneo degli ultimi 7 giorni (conteggiate come allenamento)
+    const recentMatchesWithoutTournament = this.matches.filter(m => {
+      const matchDate = new Date(m.date);
+      return matchDate >= weekAgo && !m.tournamentId;
+    });
 
-    this.weeklyTrainingLoad = recentSessions.reduce((sum, s) => sum + (s.durationMin * s.rpe), 0);
+    // Calcola ore totali: sessioni + partite senza torneo (con durata stimata basata sul formato)
+    const trainingMinutes = recentSessions.reduce((sum, s) => sum + s.durationMin, 0);
+    const matchMinutes = recentMatchesWithoutTournament.reduce((sum, m) => {
+      // Usa la durata stimata basata sul formato (60 min per 1 set, 90 min per 2 set)
+      const estimatedDuration = getEstimatedDurationMinutes(m.matchFormat);
+      return sum + estimatedDuration;
+    }, 0);
+    const totalMinutes = trainingMinutes + matchMinutes;
 
-    const rpeValues = this.trainingSessions.map(s => s.rpe).filter(r => r > 0);
-    if (rpeValues.length > 0) {
+    this.weeklyTrainingHours = Math.round(totalMinutes / 60 * 10) / 10;
+
+    // Calcola training load: (durata stimata × RPE) per sessioni e partite
+    const trainingLoad = recentSessions.reduce((sum, s) => sum + (s.durationMin * s.rpe), 0);
+    const matchLoad = recentMatchesWithoutTournament.reduce((sum, m) => {
+      const estimatedDuration = getEstimatedDurationMinutes(m.matchFormat);
+      return sum + (estimatedDuration * m.rpe);
+    }, 0);
+    this.weeklyTrainingLoad = trainingLoad + matchLoad;
+
+    // Calcola RPE medio: include sia sessioni che partite senza torneo
+    const allRpeValues = [
+      ...this.trainingSessions.map(s => s.rpe),
+      ...this.matches.filter(m => !m.tournamentId).map(m => m.rpe)
+    ].filter(r => r > 0);
+
+    if (allRpeValues.length > 0) {
       this.avgRpe = Math.round(
-        rpeValues.reduce((a, b) => a + b, 0) / rpeValues.length * 10
+        allRpeValues.reduce((a, b) => a + b, 0) / allRpeValues.length * 10
       ) / 10;
     }
   }
