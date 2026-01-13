@@ -1,0 +1,44 @@
+.btn {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  border: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--tennis-green);
+  color: var(--white);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--tennis-green-dark);
+}
+
+.btn-secondary {
+  background-color: var(--gray-light);
+  color: var(--gray-dark);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--gray);
+  color: var(--white);
+}
+
+.btn-danger {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #C62828;
+}

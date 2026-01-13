@@ -1,0 +1,84 @@
+<div class="tournaments-page">
+  <div class="page-header">
+    <h1>Tornei</h1>
+    <app-button label="+ Nuovo Torneo" variant="primary" (clicked)="startAdd()"></app-button>
+  </div>
+
+  <div class="form-container" *ngIf="showForm">
+    <h2>{{ editingTournament ? 'Modifica Torneo' : 'Nuovo Torneo' }}</h2>
+    <form (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Nome *</label>
+        <input type="text" [(ngModel)]="formData.name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label>Luogo</label>
+        <input type="text" [(ngModel)]="formData.location" name="location">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data Inizio *</label>
+          <input type="date" [(ngModel)]="formData.startDate" name="startDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Data Fine *</label>
+          <input type="date" [(ngModel)]="formData.endDate" name="endDate" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Superficie</label>
+          <select [(ngModel)]="formData.surface" name="surface">
+            <option value="clay">Terra Rossa</option>
+            <option value="grass">Erba</option>
+            <option value="hard">Cemento</option>
+            <option value="indoor">Indoor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Categoria</label>
+          <input type="text" [(ngModel)]="formData.category" name="category">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Note</label>
+        <textarea [(ngModel)]="formData.notes" name="notes" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <app-button label="Annulla" variant="secondary" type="button" (clicked)="cancel()"></app-button>
+        <app-button label="Salva" variant="primary" type="submit"></app-button>
+      </div>
+    </form>
+  </div>
+
+  <div class="tournaments-list" *ngIf="!showForm">
+    <div class="tournament-card" *ngFor="let tournament of tournaments">
+      <div class="tournament-header">
+        <h3 class="tournament-name-link" (click)="viewDetail(tournament.id)">{{ tournament.name }}</h3>
+        <div class="tournament-actions">
+          <button class="icon-btn" (click)="viewDetail(tournament.id)" title="Visualizza dettaglio">👁️</button>
+          <button class="icon-btn" (click)="startEdit(tournament)">✏️</button>
+          <button class="icon-btn danger" (click)="delete(tournament.id)">🗑️</button>
+        </div>
+      </div>
+      <div class="tournament-details">
+        <p><strong>Luogo:</strong> {{ tournament.location || 'N/A' }}</p>
+        <p><strong>Date:</strong> {{ formatDate(tournament.startDate) }} - {{ formatDate(tournament.endDate) }}</p>
+        <p><strong>Superficie:</strong> {{ getSurfaceName(tournament.surface) }}</p>
+        <p *ngIf="tournament.category"><strong>Categoria:</strong> {{ tournament.category }}</p>
+        <p *ngIf="tournament.notes"><strong>Note:</strong> {{ tournament.notes }}</p>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="tournaments.length === 0">
+      <p>Nessun torneo registrato. Clicca su "+ Nuovo Torneo" per iniziare.</p>
+    </div>
+  </div>
+</div>

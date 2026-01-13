@@ -1,0 +1,120 @@
+.daily-metrics-page {
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* page-header, form-container, form-group, form-row, form-actions ora in styles.css - override specifici qui sotto */
+.page-header h1 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.form-container h2 {
+  color: var(--tennis-green-dark);
+}
+
+.form-group label {
+  color: var(--gray-dark);
+}
+
+.form-group input,
+.form-group textarea {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--gray);
+}
+
+.metrics-list {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.metric-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  border-left: 4px solid var(--tennis-green);
+}
+
+.metric-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--gray-light);
+}
+
+.metric-header h3 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.metric-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--gray-light);
+}
+
+.icon-btn.danger:hover {
+  background: #ffebee;
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.metric-details p {
+  margin: var(--spacing-xs) 0;
+  color: var(--gray-dark);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--gray);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 768px) {
+  .daily-metrics-page {
+    padding: var(--spacing-md);
+  }
+
+  .form-container {
+    padding: var(--spacing-lg);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+}

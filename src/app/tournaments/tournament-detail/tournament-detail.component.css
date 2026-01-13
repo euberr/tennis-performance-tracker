@@ -1,0 +1,202 @@
+.tournament-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-lg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--neutral-gray-light);
+  color: var(--neutral-gray-dark);
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.back-button:hover {
+  background: var(--neutral-gray);
+  color: var(--white);
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--neutral-gray);
+}
+
+.tournament-info-card {
+  margin-bottom: var(--spacing-xl);
+}
+
+.tournament-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--neutral-gray-light);
+}
+
+.tournament-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--field-green);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.tournament-location {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--neutral-gray);
+  margin: 0;
+}
+
+.tournament-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.detail-label {
+  font-weight: 500;
+  color: var(--neutral-gray-dark);
+  font-size: 0.875rem;
+}
+
+.detail-value {
+  color: var(--neutral-gray-dark);
+  font-size: 0.875rem;
+}
+
+.matches-section {
+  margin-top: var(--spacing-xl);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
+}
+
+.add-match-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: var(--tennis-ball);
+  color: var(--field-green);
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.add-match-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.matches-list {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.match-card {
+  transition: all var(--transition-normal);
+}
+
+.match-card.win {
+  border-left: 4px solid #10B981;
+}
+
+.match-card.loss {
+  border-left: 4px solid #EF4444;
+}
+
+/* match-header, match-outcome, match-info, match-title, match-date, match-actions ora in styles.css */
+
+/* icon-btn, match-details, detail-row, detail-label, detail-value ora in styles.css */
+
+/* detail-metrics e metric-item ora in styles.css */
+
+.not-found {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--neutral-gray);
+}
+
+.match-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-left: var(--spacing-sm);
+  padding: 2px 6px;
+  background: var(--neutral-gray-light);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--neutral-gray-dark);
+  font-weight: 500;
+}
+
+.partner-info {
+  display: inline-block;
+  margin-left: var(--spacing-sm);
+}
+
+.with-partner {
+  font-size: 0.875rem;
+  color: var(--neutral-gray);
+  font-weight: 400;
+  font-style: italic;
+}
+
+.rpe-badge {
+  margin-left: var(--spacing-xs);
+}
+
+/* btn-secondary ora in styles.css - aggiungo solo override specifico se necessario */
+.btn-secondary {
+  margin-top: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .tournament-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .match-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+}

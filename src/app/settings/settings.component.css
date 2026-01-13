@@ -1,0 +1,57 @@
+.settings-page {
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-header h1 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.settings-section {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.settings-section h2 {
+  margin-top: 0;
+  color: var(--tennis-green-dark);
+}
+
+.settings-section p {
+  margin: var(--spacing-sm) 0;
+  color: var(--gray-dark);
+}
+
+.settings-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-top: var(--spacing-lg);
+}
+
+.import-section {
+  display: inline-block;
+}
+
+.import-label {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    padding: var(--spacing-md);
+  }
+
+  .settings-section {
+    padding: var(--spacing-lg);
+  }
+}

@@ -1,0 +1,145 @@
+<div class="tournament-detail">
+  <button class="back-button" (click)="goBack()">
+    <lucide-angular name="arrow-left" [size]="20"></lucide-angular>
+    <span>Torna ai Tornei</span>
+  </button>
+
+  <div *ngIf="loading" class="loading">
+    <p>Caricamento...</p>
+  </div>
+
+  <div *ngIf="!loading && tournament">
+    <!-- Tournament Info -->
+    <tp-card class="tournament-info-card">
+      <div class="tournament-header">
+        <div>
+          <h1 class="tournament-title">{{ tournament.name }}</h1>
+          <p class="tournament-location">
+            <lucide-angular name="map-pin" [size]="16"></lucide-angular>
+            {{ tournament.location || 'N/A' }}
+          </p>
+        </div>
+        <tp-badge [variant]="'primary'" [large]="true">
+          {{ getSurfaceName(tournament.surface) }}
+        </tp-badge>
+      </div>
+
+      <div class="tournament-details">
+        <div class="detail-item">
+          <span class="detail-label">Data Inizio:</span>
+          <span class="detail-value">{{ formatDate(tournament.startDate) }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Data Fine:</span>
+          <span class="detail-value">{{ formatDate(tournament.endDate) }}</span>
+        </div>
+        <div class="detail-item" *ngIf="tournament.category">
+          <span class="detail-label">Categoria:</span>
+          <span class="detail-value">{{ tournament.category }}</span>
+        </div>
+        <div class="detail-item" *ngIf="tournament.notes">
+          <span class="detail-label">Note:</span>
+          <span class="detail-value">{{ tournament.notes }}</span>
+        </div>
+      </div>
+    </tp-card>
+
+    <!-- Matches Section -->
+    <div class="matches-section">
+      <div class="section-header">
+        <h2>Partite del Torneo</h2>
+        <button class="add-match-btn" (click)="addMatch()">
+          <lucide-angular name="plus" [size]="18"></lucide-angular>
+          <span>Aggiungi Partita</span>
+        </button>
+      </div>
+
+      <div class="matches-list">
+        <tp-card *ngFor="let match of matches" class="match-card" [class.win]="match.outcome === 'W'" [class.loss]="match.outcome === 'L'">
+          <div class="match-header">
+            <div class="match-outcome">
+              <tp-badge [variant]="match.outcome === 'W' ? 'success' : 'danger'" [large]="true">
+                {{ match.outcome === 'W' ? 'V' : 'S' }}
+              </tp-badge>
+              <div class="match-info">
+                <h3 class="match-title">
+                  vs {{ match.opponentName }}
+                  <span *ngIf="(match.matchType || 'singolare') === 'doppio' && match.partnerName" class="partner-info">
+                    <span class="with-partner">con {{ match.partnerName }}</span>
+                  </span>
+                </h3>
+                <p class="match-date">
+                  <lucide-angular name="calendar" [size]="14"></lucide-angular>
+                  {{ formatDate(match.date) }}
+                  <span class="match-type-badge">
+                    <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
+                    {{ getMatchTypeName(match.matchType) }}
+                  </span>
+                </p>
+              </div>
+            </div>
+            <div class="match-actions">
+              <button class="icon-btn" (click)="editMatch(match)" title="Modifica">
+                <lucide-angular name="edit" [size]="18"></lucide-angular>
+              </button>
+              <button class="icon-btn danger" (click)="deleteMatch(match.id)" title="Elimina">
+                <lucide-angular name="trash-2" [size]="18"></lucide-angular>
+              </button>
+            </div>
+          </div>
+          <div class="match-details">
+            <div class="detail-row">
+              <span class="detail-label">Tipo:</span>
+              <span class="detail-value">
+                <tp-badge [variant]="(match.matchType || 'singolare') === 'doppio' ? 'primary' : 'neutral'">
+                  <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
+                  {{ getMatchTypeName(match.matchType) }}
+                </tp-badge>
+              </span>
+            </div>
+            <div class="detail-row" *ngIf="(match.matchType || 'singolare') === 'doppio' && match.partnerName">
+              <span class="detail-label">Partner:</span>
+              <span class="detail-value">{{ match.partnerName }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Score:</span>
+              <span class="detail-value">{{ match.score.length > 0 ? match.score.join(', ') : 'N/A' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Superficie:</span>
+              <span class="detail-value">{{ getSurfaceName(match.surface) }}</span>
+            </div>
+            <div class="detail-metrics">
+              <div class="metric-item">
+                <lucide-angular name="star" [size]="14"></lucide-angular>
+                <span>Performance: {{ match.performanceScore }}/10</span>
+              </div>
+              <div class="metric-item">
+                <lucide-angular name="flame" [size]="14"></lucide-angular>
+                <span>RPE: 
+                  <tp-badge [variant]="getRpeVariant(match.rpe)" class="rpe-badge">
+                    {{ match.rpe }}/10
+                  </tp-badge>
+                </span>
+              </div>
+            </div>
+          </div>
+        </tp-card>
+
+        <tp-empty-state
+          *ngIf="matches.length === 0"
+          icon="swords"
+          title="Nessuna partita registrata"
+          description="Aggiungi la prima partita di questo torneo"
+          actionLabel="Aggiungi Partita"
+          (onAction)="addMatch()">
+        </tp-empty-state>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !tournament" class="not-found">
+    <p>Torneo non trovato</p>
+    <button class="btn-secondary" (click)="goBack()">Torna ai Tornei</button>
+  </div>
+</div>

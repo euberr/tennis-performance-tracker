@@ -1,0 +1,50 @@
+.metric-card {
+  border-left: 4px solid var(--neutral-gray-light);
+  padding: 0;
+}
+
+.metric-card.status-good {
+  border-left-color: #10B981;
+}
+
+.metric-card.status-neutral {
+  border-left-color: var(--tennis-ball);
+}
+
+.metric-card.status-warning {
+  border-left-color: #EF4444;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-sm);
+}
+
+.metric-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--neutral-gray-dark);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-icon {
+  color: var(--neutral-gray);
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--field-green);
+  line-height: 1;
+  margin: var(--spacing-sm) 0;
+}
+
+.metric-subtitle {
+  font-size: 0.75rem;
+  color: var(--neutral-gray);
+  margin-top: var(--spacing-xs);
+}

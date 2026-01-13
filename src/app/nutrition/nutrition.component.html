@@ -1,0 +1,132 @@
+<div class="nutrition-page">
+  <div class="page-header">
+    <h1>Nutrizione</h1>
+    <app-button label="+ Nuovo Log" variant="primary" (clicked)="startAdd()"></app-button>
+  </div>
+
+  <div class="form-container" *ngIf="showForm">
+    <h2>{{ editingLog ? 'Modifica Log Nutrizionale' : 'Nuovo Log Nutrizionale' }}</h2>
+    <form (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Tipo *</label>
+        <select [(ngModel)]="formData.linkedType" name="linkedType" required>
+          <option value="match">Partita</option>
+          <option value="training">Allenamento</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Collega a *</label>
+        <select [(ngModel)]="formData.linkedId" name="linkedId" required>
+          <option value="">Seleziona...</option>
+          <option *ngFor="let item of getAvailableItems()" [value]="item.id">
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="nutrition-section">
+        <h3>Pre</h3>
+        <div class="checkbox-group">
+          <label><input type="checkbox" [(ngModel)]="formData.pre!.carbs" name="preCarbs"> Carboidrati</label>
+          <label><input type="checkbox" [(ngModel)]="formData.pre!.protein" name="preProtein"> Proteine</label>
+          <label><input type="checkbox" [(ngModel)]="formData.pre!.caffeine" name="preCaffeine"> Caffeina</label>
+        </div>
+        <div class="form-group">
+          <label>Note</label>
+          <textarea [(ngModel)]="formData.pre!.notes" name="preNotes" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="nutrition-section">
+        <h3>Durante</h3>
+        <div class="form-group">
+          <label>Acqua (ml)</label>
+          <input type="number" [(ngModel)]="formData.during!.waterMl" name="waterMl" min="0">
+        </div>
+        <div class="checkbox-group">
+          <label><input type="checkbox" [(ngModel)]="formData.during!.electrolytes" name="electrolytes"> Elettroliti</label>
+          <label><input type="checkbox" [(ngModel)]="formData.during!.carbs" name="duringCarbs"> Carboidrati</label>
+        </div>
+        <div class="form-group">
+          <label>Note</label>
+          <textarea [(ngModel)]="formData.during!.notes" name="duringNotes" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="nutrition-section">
+        <h3>Post</h3>
+        <div class="checkbox-group">
+          <label><input type="checkbox" [(ngModel)]="formData.post!.within60min" name="within60min"> Entro 60 min</label>
+          <label><input type="checkbox" [(ngModel)]="formData.post!.carbs" name="postCarbs"> Carboidrati</label>
+          <label><input type="checkbox" [(ngModel)]="formData.post!.protein" name="postProtein"> Proteine</label>
+        </div>
+        <div class="form-group">
+          <label>Note</label>
+          <textarea [(ngModel)]="formData.post!.notes" name="postNotes" rows="2"></textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Comfort Intestinale (1-10)</label>
+          <input type="number" [(ngModel)]="formData.gutComfort" name="gutComfort" min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Crampi (1-10)</label>
+          <input type="number" [(ngModel)]="formData.cramps" name="cramps" min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Impatto Energia (1-10)</label>
+          <input type="number" [(ngModel)]="formData.energyImpact" name="energyImpact" min="1" max="10" required>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <app-button label="Annulla" variant="secondary" type="button" (clicked)="cancel()"></app-button>
+        <app-button label="Salva" variant="primary" type="submit"></app-button>
+      </div>
+    </form>
+  </div>
+
+  <div class="logs-list" *ngIf="!showForm">
+    <div class="log-card" *ngFor="let log of logs">
+      <div class="log-header">
+        <div>
+          <h3>{{ getLinkedName(log) }}</h3>
+          <p class="log-type">{{ log.linkedType === 'match' ? 'Partita' : 'Allenamento' }}</p>
+        </div>
+        <div class="log-actions">
+          <button class="icon-btn" (click)="startEdit(log)">✏️</button>
+          <button class="icon-btn danger" (click)="delete(log.id)">🗑️</button>
+        </div>
+      </div>
+      <div class="log-details">
+        <div class="nutrition-summary">
+          <div><strong>Pre:</strong> 
+            <span *ngIf="log.pre.carbs">🍞</span>
+            <span *ngIf="log.pre.protein">🥩</span>
+            <span *ngIf="log.pre.caffeine">☕</span>
+          </div>
+          <div><strong>Durante:</strong> 
+            {{ log.during.waterMl }}ml
+            <span *ngIf="log.during.electrolytes">🧂</span>
+            <span *ngIf="log.during.carbs">🍞</span>
+          </div>
+          <div><strong>Post:</strong> 
+            <span *ngIf="log.post.within60min">⏱️</span>
+            <span *ngIf="log.post.carbs">🍞</span>
+            <span *ngIf="log.post.protein">🥩</span>
+          </div>
+        </div>
+        <p><strong>Comfort:</strong> {{ log.gutComfort }}/10 | <strong>Crampi:</strong> {{ log.cramps }}/10 | <strong>Energia:</strong> {{ log.energyImpact }}/10</p>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="logs.length === 0">
+      <p>Nessun log nutrizionale registrato. Clicca su "+ Nuovo Log" per iniziare.</p>
+    </div>
+  </div>
+</div>

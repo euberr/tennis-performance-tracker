@@ -1,0 +1,103 @@
+<div class="daily-metrics-page">
+  <div class="page-header">
+    <h1>Metriche Giornaliere</h1>
+    <app-button label="+ Nuove Metriche" variant="primary" (clicked)="startAdd()"></app-button>
+  </div>
+
+  <div class="form-container" *ngIf="showForm">
+    <h2>{{ editingMetrics ? 'Modifica Metriche' : 'Nuove Metriche' }}</h2>
+    <form (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Data *</label>
+        <input type="date" [(ngModel)]="formData.date" name="date" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Peso (kg)</label>
+          <input type="number" [(ngModel)]="formData.weightKg" name="weightKg" step="0.1" min="0">
+        </div>
+
+        <div class="form-group">
+          <label>Ore di Sonno</label>
+          <input type="number" [(ngModel)]="formData.sleepHours" name="sleepHours" step="0.5" min="0" max="24">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Qualità Sonno (1-10)</label>
+          <input type="number" [(ngModel)]="formData.sleepQuality" name="sleepQuality" min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Stress (1-10)</label>
+          <input type="number" [(ngModel)]="formData.stress" name="stress" min="1" max="10" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Soreness (1-10)</label>
+          <input type="number" [(ngModel)]="formData.soreness" name="soreness" min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Energia Mattina (1-10)</label>
+          <input type="number" [(ngModel)]="formData.energyMorning" name="energyMorning" min="1" max="10" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Note</label>
+        <textarea [(ngModel)]="formData.notes" name="notes" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <app-button label="Annulla" variant="secondary" type="button" (clicked)="cancel()"></app-button>
+        <app-button label="Salva" variant="primary" type="submit"></app-button>
+      </div>
+    </form>
+  </div>
+
+  <div class="metrics-list" *ngIf="!showForm">
+    <div class="metric-card" *ngFor="let metric of metrics">
+      <div class="metric-header">
+        <div>
+          <h3>{{ formatDate(metric.date) }}</h3>
+        </div>
+        <div class="metric-actions">
+          <button class="icon-btn" (click)="startEdit(metric)">✏️</button>
+          <button class="icon-btn danger" (click)="delete(metric.date)">🗑️</button>
+        </div>
+      </div>
+      <div class="metric-details">
+        <div class="metric-grid">
+          <div *ngIf="metric.weightKg">
+            <strong>Peso:</strong> {{ metric.weightKg }} kg
+          </div>
+          <div *ngIf="metric.sleepHours">
+            <strong>Sonno:</strong> {{ metric.sleepHours }}h
+          </div>
+          <div>
+            <strong>Qualità Sonno:</strong> {{ metric.sleepQuality }}/10
+          </div>
+          <div>
+            <strong>Stress:</strong> {{ metric.stress }}/10
+          </div>
+          <div>
+            <strong>Soreness:</strong> {{ metric.soreness }}/10
+          </div>
+          <div>
+            <strong>Energia:</strong> {{ metric.energyMorning }}/10
+          </div>
+        </div>
+        <p *ngIf="metric.notes"><strong>Note:</strong> {{ metric.notes }}</p>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="metrics.length === 0">
+      <p>Nessuna metrica registrata. Clicca su "+ Nuove Metriche" per iniziare.</p>
+    </div>
+  </div>
+</div>

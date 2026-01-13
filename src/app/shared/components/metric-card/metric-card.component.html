@@ -1,0 +1,14 @@
+<tp-card>
+  <div class="metric-card" [class.status-good]="status === 'good'" 
+       [class.status-neutral]="status === 'neutral'" 
+       [class.status-warning]="status === 'warning'">
+    <div class="metric-header">
+      <h3 class="metric-title">{{ title }}</h3>
+      <div class="metric-icon" *ngIf="icon">
+        <lucide-angular [name]="icon" [size]="20"></lucide-angular>
+      </div>
+    </div>
+    <div class="metric-value">{{ value }}</div>
+    <div class="metric-subtitle" *ngIf="subtitle">{{ subtitle }}</div>
+  </div>
+</tp-card>

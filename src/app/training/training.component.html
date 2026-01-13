@@ -1,0 +1,93 @@
+<div class="training-page">
+  <div class="page-header">
+    <h1>Allenamenti</h1>
+    <app-button label="+ Nuovo Allenamento" variant="primary" (clicked)="startAdd()"></app-button>
+  </div>
+
+  <div class="form-container" *ngIf="showForm">
+    <h2>{{ editingSession ? 'Modifica Allenamento' : 'Nuovo Allenamento' }}</h2>
+    <form (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Data *</label>
+        <input type="date" [(ngModel)]="formData.date" name="date" required>
+      </div>
+
+      <div class="form-group">
+        <label>Tipo *</label>
+        <select [(ngModel)]="formData.type" name="type" required>
+          <option value="tennis">Tennis</option>
+          <option value="gym">Palestra</option>
+          <option value="run">Corsa</option>
+          <option value="mobility">Mobilità</option>
+          <option value="technique">Tecnica</option>
+          <option value="sparring">Sparring</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Durata (minuti)</label>
+        <input type="number" [(ngModel)]="formData.durationMin" name="durationMin" min="1" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>RPE (1-10)</label>
+          <input type="number" [(ngModel)]="formData.rpe" name="rpe" min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Session Score (1-10)</label>
+          <input type="number" [(ngModel)]="formData.sessionScore" name="sessionScore" min="1" max="10" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Soreness (1-10)</label>
+          <input type="number" [(ngModel)]="formData.soreness" name="soreness" min="1" max="10" required>
+        </div>
+
+        <div class="form-group">
+          <label>Qualità Sonno (1-10)</label>
+          <input type="number" [(ngModel)]="formData.sleepQuality" name="sleepQuality" min="1" max="10" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Note</label>
+        <textarea [(ngModel)]="formData.notes" name="notes" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <app-button label="Annulla" variant="secondary" type="button" (clicked)="cancel()"></app-button>
+        <app-button label="Salva" variant="primary" type="submit"></app-button>
+      </div>
+    </form>
+  </div>
+
+  <div class="sessions-list" *ngIf="!showForm">
+    <div class="session-card" *ngFor="let session of sessions">
+      <div class="session-header">
+        <div>
+          <h3>{{ getTypeName(session.type) }}</h3>
+          <p class="session-date">{{ formatDate(session.date) }}</p>
+        </div>
+        <div class="session-actions">
+          <button class="icon-btn" (click)="startEdit(session)">✏️</button>
+          <button class="icon-btn danger" (click)="delete(session.id)">🗑️</button>
+        </div>
+      </div>
+      <div class="session-details">
+        <p><strong>Durata:</strong> {{ session.durationMin }} minuti</p>
+        <p><strong>RPE:</strong> {{ session.rpe }}/10 | <strong>Score:</strong> {{ session.sessionScore }}/10</p>
+        <p><strong>Soreness:</strong> {{ session.soreness }}/10 | <strong>Sonno:</strong> {{ session.sleepQuality }}/10</p>
+        <p><strong>Training Load:</strong> {{ session.durationMin * session.rpe }}</p>
+        <p *ngIf="session.notes"><strong>Note:</strong> {{ session.notes }}</p>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="sessions.length === 0">
+      <p>Nessun allenamento registrato. Clicca su "+ Nuovo Allenamento" per iniziare.</p>
+    </div>
+  </div>
+</div>

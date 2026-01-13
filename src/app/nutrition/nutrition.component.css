@@ -1,0 +1,154 @@
+.nutrition-page {
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* page-header, form-container ora in styles.css - override specifici qui sotto */
+.page-header h1 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.form-container h2 {
+  color: var(--tennis-green-dark);
+}
+
+.nutrition-section {
+  background: var(--gray-light);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.nutrition-section h3 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+  color: var(--tennis-green-dark);
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+}
+
+/* form-group, form-row, form-actions ora in styles.css - override specifici se necessario */
+.form-group label {
+  color: var(--gray-dark);
+}
+
+.logs-list {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.log-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  border-left: 4px solid var(--tennis-yellow);
+}
+
+.log-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--gray-light);
+}
+
+.log-header h3 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.log-type {
+  margin: 0;
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
+.log-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--gray-light);
+}
+
+.icon-btn.danger:hover {
+  background: #ffebee;
+}
+
+.nutrition-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.log-details p {
+  margin: var(--spacing-xs) 0;
+  color: var(--gray-dark);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--gray);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 768px) {
+  .nutrition-page {
+    padding: var(--spacing-md);
+  }
+
+  .form-container {
+    padding: var(--spacing-lg);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .log-header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+}

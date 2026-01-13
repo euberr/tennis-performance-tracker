@@ -1,0 +1,27 @@
+<div class="settings-page">
+  <div class="page-header">
+    <h1>Impostazioni</h1>
+  </div>
+
+  <div class="settings-section">
+    <h2>Backup e Ripristino</h2>
+    <p>Esporta tutti i tuoi dati in un file JSON per fare un backup o importali da un backup precedente.</p>
+    
+    <div class="settings-actions">
+      <app-button label="Esporta Dati" variant="primary" (clicked)="exportData()"></app-button>
+      
+      <div class="import-section">
+        <input type="file" #fileInput id="import-file" accept=".json" (change)="importData($event)" style="display: none;">
+        <app-button label="Importa Dati" variant="secondary" (clicked)="triggerFileInput()"></app-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <h2>Informazioni</h2>
+    <p><strong>Tennis Performance Tracker</strong></p>
+    <p>Versione 1.0.0</p>
+    <p>App standalone per il tracciamento delle performance tennistiche.</p>
+    <p>Tutti i dati sono salvati localmente nel tuo browser.</p>
+  </div>
+</div>

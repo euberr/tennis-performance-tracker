@@ -1,0 +1,107 @@
+<div class="dashboard">
+  <!-- Hero Header -->
+  <div class="dashboard-hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Dashboard</h1>
+      <p class="hero-subtitle">Panoramica delle tue performance</p>
+    </div>
+    <div class="hero-actions">
+      <button class="quick-add-btn" (click)="navigateTo('/matches')" title="Aggiungi Partita">
+        <lucide-angular name="swords" [size]="20"></lucide-angular>
+        <span>Match</span>
+      </button>
+      <button class="quick-add-btn" (click)="navigateTo('/training')" title="Aggiungi Allenamento">
+        <lucide-angular name="dumbbell" [size]="20"></lucide-angular>
+        <span>Training</span>
+      </button>
+      <button class="quick-add-btn" (click)="navigateTo('/daily-metrics')" title="Aggiungi Metriche">
+        <lucide-angular name="heart-pulse" [size]="20"></lucide-angular>
+        <span>Metriche</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Metrics Grid -->
+  <div class="metrics-grid">
+    <app-metric-card 
+      title="Win Rate"
+      [value]="winRate + '%'"
+      subtitle="{{ matches.length }} partite totali"
+      [status]="getStatusForValue(winRate / 10)"
+      icon="trophy">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="Performance Media"
+      [value]="avgPerformanceScore"
+      subtitle="Score medio partite"
+      [status]="getStatusForValue(avgPerformanceScore)"
+      icon="star">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="Ore Allenamento"
+      [value]="weeklyTrainingHours + 'h'"
+      subtitle="Ultimi 7 giorni"
+      [status]="weeklyTrainingHours >= 5 ? 'good' : weeklyTrainingHours >= 2 ? 'neutral' : 'warning'"
+      icon="activity">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="Training Load"
+      [value]="weeklyTrainingLoad"
+      subtitle="Settimanale (min × RPE)"
+      [status]="weeklyTrainingLoad >= 1000 ? 'good' : weeklyTrainingLoad >= 500 ? 'neutral' : 'warning'"
+      icon="trending-up">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="Peso Medio"
+      [value]="avgWeight > 0 ? avgWeight + ' kg' : 'N/A'"
+      subtitle="Ultimi 7 giorni"
+      status="neutral"
+      icon="scale">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="Energia Media"
+      [value]="avgEnergy > 0 ? avgEnergy : 'N/A'"
+      subtitle="Mattina (1-10)"
+      [status]="getStatusForValue(avgEnergy)"
+      icon="zap">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="Stress Medio"
+      [value]="avgStress > 0 ? avgStress : 'N/A'"
+      subtitle="Giornaliero (1-10)"
+      [status]="getStatusForValue(avgStress, true)"
+      icon="heart">
+    </app-metric-card>
+
+    <app-metric-card 
+      title="RPE Medio"
+      [value]="avgRpe > 0 ? avgRpe : 'N/A'"
+      subtitle="Allenamenti (1-10)"
+      [status]="getStatusForValue(avgRpe)"
+      icon="flame">
+    </app-metric-card>
+  </div>
+
+  <!-- Win Rate by Surface -->
+  <tp-card *ngIf="surfaceKeys.length > 0" class="surface-card">
+    <div class="surface-header">
+      <h2 class="surface-title">Win Rate per Superficie</h2>
+    </div>
+    <div class="surface-stats">
+      <div class="surface-stat" *ngFor="let surface of surfaceKeys">
+        <div class="surface-info">
+          <span class="surface-name">{{ getSurfaceName(surface) }}</span>
+        </div>
+        <div class="surface-rate">
+          <span class="rate-value">{{ winRateBySurface[surface] }}%</span>
+        </div>
+      </div>
+    </div>
+  </tp-card>
+</div>

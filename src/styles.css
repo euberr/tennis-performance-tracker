@@ -1,0 +1,355 @@
+/* Global Styles - Tennis Performance Tracker */
+
+:root {
+  /* Tennis Premium Color Palette */
+  --field-green: #0B3D2E;
+  --dark-green: #06261C;
+  --white: #FFFFFF;
+  --tennis-ball: #F6E547;
+  --neutral-gray-light: #E5E7EB;
+  --neutral-gray: #9CA3AF;
+  --neutral-gray-dark: #4B5563;
+  
+  /* Legacy colors (for compatibility) */
+  --tennis-green-dark: #0B3D2E;
+  --tennis-green: #0B3D2E;
+  --tennis-green-light: #0B3D2E;
+  --tennis-yellow: #F6E547;
+  --gray-light: #E5E7EB;
+  --gray: #9CA3AF;
+  --gray-dark: #4B5563;
+  --red: #EF4444;
+  --orange: #F59E0B;
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-xxl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.2);
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--dark-green);
+  color: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-md);
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+a {
+  color: var(--tennis-green);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--tennis-green-dark);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* Utility Classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing-md); }
+.mt-3 { margin-top: var(--spacing-lg); }
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+
+/* Status Colors */
+.status-good {
+  color: var(--tennis-green);
+}
+
+.status-neutral {
+  color: var(--tennis-yellow);
+}
+
+.status-warning {
+  color: var(--red);
+}
+
+/* Shared Component Styles - Estraggo duplicazioni comuni */
+
+/* Page Header (usato in multiple pagine) */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+/* Form Styles (usati in multiple pagine) */
+.form-container {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-container h2 {
+  margin-top: 0;
+  color: var(--tennis-green-dark);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--neutral-gray-dark);
+  font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 2px solid var(--neutral-gray-light);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: all var(--transition-fast);
+  background: var(--white);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--field-green);
+  box-shadow: 0 0 0 3px rgba(11, 61, 46, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--field-green);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background: var(--dark-green);
+}
+
+.btn-secondary {
+  background: var(--neutral-gray-light);
+  color: var(--neutral-gray-dark);
+}
+
+.btn-secondary:hover {
+  background: var(--neutral-gray);
+  color: var(--white);
+}
+
+/* Icon Button (usato in multiple pagine) */
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--neutral-gray);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--neutral-gray-light);
+  color: var(--field-green);
+}
+
+.icon-btn.danger:hover {
+  background: #FEE2E2;
+  color: #EF4444;
+}
+
+/* Detail Rows (usati in multiple pagine) */
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: var(--neutral-gray-dark);
+  font-size: 0.875rem;
+}
+
+.detail-value {
+  color: var(--neutral-gray-dark);
+  font-size: 0.875rem;
+}
+
+/* Match Card Styles (condivisi tra matches e tournament-detail) */
+.match-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--neutral-gray-light);
+}
+
+.match-outcome {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex: 1;
+}
+
+.match-info {
+  flex: 1;
+}
+
+.match-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--field-green);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.match-date {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.875rem;
+  color: var(--neutral-gray);
+  margin: 0;
+}
+
+.match-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.match-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.match-card.win {
+  border-left: 4px solid #10B981;
+}
+
+.match-card.loss {
+  border-left: 4px solid #EF4444;
+}
+
+/* Metric Item (usato in multiple pagine) */
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.875rem;
+  color: var(--neutral-gray-dark);
+}
+
+.metric-item lucide-angular {
+  color: var(--neutral-gray);
+}
+
+/* Empty State (se non già gestito da componente) */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--gray);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+}

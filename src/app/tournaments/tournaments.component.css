@@ -1,0 +1,143 @@
+.tournaments-page {
+  padding: var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* page-header, form-container, form-group ora in styles.css - override specifici qui sotto */
+.page-header h1 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.form-container {
+  border-radius: var(--radius-lg);
+}
+
+.form-container h2 {
+  color: var(--tennis-green-dark);
+}
+
+.form-group label {
+  color: var(--gray-dark);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--gray);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--tennis-green);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
+
+.tournaments-list {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.tournament-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.tournament-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.tournament-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 2px solid var(--gray-light);
+}
+
+.tournament-header h3 {
+  margin: 0;
+  color: var(--tennis-green-dark);
+}
+
+.tournament-name-link {
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.tournament-name-link:hover {
+  color: var(--field-green);
+  text-decoration: underline;
+}
+
+.tournament-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--gray-light);
+}
+
+.icon-btn.danger:hover {
+  background: #ffebee;
+}
+
+.tournament-details p {
+  margin: var(--spacing-xs) 0;
+  color: var(--gray-dark);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xxl);
+  color: var(--gray);
+  background: var(--white);
+  border-radius: var(--radius-lg);
+}
+
+@media (max-width: 768px) {
+  .tournaments-page {
+    padding: var(--spacing-md);
+  }
+
+  .form-container {
+    padding: var(--spacing-lg);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

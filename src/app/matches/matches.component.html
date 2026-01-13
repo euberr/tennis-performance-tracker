@@ -1,0 +1,281 @@
+<div class="matches-page">
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Partite</h1>
+      <p class="page-subtitle">Gestisci le tue partite e analizza le performance</p>
+    </div>
+    <button class="add-button" (click)="startAdd()">
+      <lucide-angular name="plus" [size]="20"></lucide-angular>
+      <span>Nuova Partita</span>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section" *ngIf="!showForm">
+    <div class="filter-group" *ngIf="tournaments.length > 0">
+      <label class="filter-label">Filtra per torneo:</label>
+      <select [(ngModel)]="selectedTournamentFilter" (ngModelChange)="onFilterChange()" class="filter-select">
+        <option value="all">Tutte le partite</option>
+        <option value="none">Solo senza torneo</option>
+        <option *ngFor="let tournament of tournaments" [value]="tournament.id">
+          {{ tournament.name }}
+        </option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">Filtra per tipo:</label>
+      <select [(ngModel)]="selectedMatchTypeFilter" (ngModelChange)="onFilterChange()" class="filter-select">
+        <option value="all">Tutti i tipi</option>
+        <option value="singolare">Solo Singolare</option>
+        <option value="doppio">Solo Doppio</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <tp-card *ngIf="showForm" class="form-card">
+    <div class="form-header">
+      <h2>{{ editingMatch ? 'Modifica Partita' : 'Nuova Partita' }}</h2>
+      <button class="close-btn" (click)="cancel()">
+        <lucide-angular name="x" [size]="20"></lucide-angular>
+      </button>
+    </div>
+    <form (ngSubmit)="save()" class="match-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data *</label>
+          <input type="date" [(ngModel)]="formData.date" name="date" required>
+        </div>
+        <div class="form-group">
+          <label>Torneo</label>
+          <select [(ngModel)]="formData.tournamentId" name="tournamentId">
+            <option value="">Nessun torneo</option>
+            <option *ngFor="let tournament of tournaments" [value]="tournament.id">
+              {{ tournament.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Avversario *</label>
+          <input type="text" [(ngModel)]="formData.opponentName" name="opponentName" required>
+        </div>
+        <div class="form-group">
+          <label>Livello Avversario</label>
+          <input type="text" [(ngModel)]="formData.opponentLevel" name="opponentLevel">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Superficie</label>
+          <select [(ngModel)]="formData.surface" name="surface">
+            <option value="clay">Terra Rossa</option>
+            <option value="grass">Erba</option>
+            <option value="hard">Cemento</option>
+            <option value="indoor">Indoor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tipo Incontro</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="matchType" value="singolare" [(ngModel)]="formData.matchType" (ngModelChange)="onMatchTypeChange()">
+              <span class="radio-label">
+                <lucide-angular name="user" [size]="16"></lucide-angular>
+                Singolare
+              </span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="matchType" value="doppio" [(ngModel)]="formData.matchType">
+              <span class="radio-label">
+                <lucide-angular name="users" [size]="16"></lucide-angular>
+                Doppio
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Risultato</label>
+          <select [(ngModel)]="formData.outcome" name="outcome">
+            <option value="W">Vittoria</option>
+            <option value="L">Sconfitta</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Score</label>
+        <div class="score-input">
+          <input type="text" [(ngModel)]="newScoreSet" name="newScoreSet" 
+                 placeholder="es. 6-4" (keyup.enter)="addScoreSet()">
+          <button type="button" class="add-score-btn" (click)="addScoreSet()">
+            <lucide-angular name="plus" [size]="16"></lucide-angular>
+          </button>
+        </div>
+        <div class="score-list" *ngIf="formData.score && formData.score.length > 0">
+          <tp-badge *ngFor="let score of formData.score; let i = index" variant="neutral" class="score-badge">
+            {{ score }}
+            <button type="button" class="remove-score" (click)="removeScoreSet(i)">
+              <lucide-angular name="x" [size]="12"></lucide-angular>
+            </button>
+          </tp-badge>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Performance Score (1-10)</label>
+        <tp-rating-slider [(ngModel)]="formData.performanceScore" name="performanceScore" [min]="1" [max]="10"></tp-rating-slider>
+      </div>
+
+      <div class="form-group">
+        <label>Sforzo percepito (RPE) *</label>
+        <tp-rating-slider [(ngModel)]="formData.rpe" name="rpe" [min]="1" [max]="10" required></tp-rating-slider>
+        <p class="field-description">
+          Quanto è stata faticosa la partita?<br>
+          <span class="rpe-scale">1 = facilissima · 10 = massimale</span>
+        </p>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Energia (1-10)</label>
+          <tp-rating-slider [(ngModel)]="formData.energy" name="energy" [min]="1" [max]="10"></tp-rating-slider>
+        </div>
+        <div class="form-group">
+          <label>Focus (1-10)</label>
+          <tp-rating-slider [(ngModel)]="formData.focus" name="focus" [min]="1" [max]="10"></tp-rating-slider>
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="formData.matchType === 'doppio'">
+        <label>Partner di doppio</label>
+        <input type="text" [(ngModel)]="formData.partnerName" name="partnerName" 
+               placeholder="Nome partner" class="partner-input">
+      </div>
+
+      <div class="form-group">
+        <label>Focus (1-10)</label>
+        <tp-rating-slider [(ngModel)]="formData.focus" name="focus" [min]="1" [max]="10"></tp-rating-slider>
+      </div>
+
+      <div class="form-group">
+        <label>Note</label>
+        <textarea [(ngModel)]="formData.notes" name="notes" rows="3"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancel()">Annulla</button>
+        <button type="submit" class="btn-primary">Salva</button>
+      </div>
+    </form>
+  </tp-card>
+
+  <!-- Matches List -->
+  <div class="matches-list" *ngIf="!showForm">
+    <tp-card *ngFor="let match of filteredMatches" class="match-card" [class.win]="match.outcome === 'W'" [class.loss]="match.outcome === 'L'">
+      <div class="match-header">
+        <div class="match-outcome">
+          <tp-badge [variant]="match.outcome === 'W' ? 'success' : 'danger'" [large]="true">
+            {{ match.outcome === 'W' ? 'V' : 'S' }}
+          </tp-badge>
+          <div class="match-info">
+            <h3 class="match-title">vs {{ match.opponentName }}</h3>
+            <p class="match-date">
+              <lucide-angular name="calendar" [size]="14"></lucide-angular>
+              {{ formatDate(match.date) }}
+              <span class="match-type-badge">
+                <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
+                {{ getMatchTypeName(match.matchType) }}
+              </span>
+            </p>
+          </div>
+        </div>
+        <div class="match-actions">
+          <button class="icon-btn" (click)="startEdit(match)" title="Modifica">
+            <lucide-angular name="edit" [size]="18"></lucide-angular>
+          </button>
+          <button class="icon-btn danger" (click)="delete(match.id)" title="Elimina">
+            <lucide-angular name="trash-2" [size]="18"></lucide-angular>
+          </button>
+        </div>
+      </div>
+      <div class="match-details">
+        <div class="detail-row">
+          <span class="detail-label">Score:</span>
+          <span class="detail-value">{{ match.score.length > 0 ? match.score.join(', ') : 'N/A' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Tipo:</span>
+          <span class="detail-value">
+            <tp-badge [variant]="(match.matchType || 'singolare') === 'doppio' ? 'primary' : 'neutral'">
+              <lucide-angular [name]="getMatchTypeIcon(match.matchType)" [size]="12"></lucide-angular>
+              {{ getMatchTypeName(match.matchType) }}
+            </tp-badge>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Superficie:</span>
+          <span class="detail-value">{{ getSurfaceName(match.surface) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Torneo:</span>
+          <span class="detail-value">
+            <span *ngIf="match.tournamentId" class="tournament-link" (click)="navigateToTournament(match.tournamentId)">
+              {{ getTournamentName(match.tournamentId) }}
+            </span>
+            <span *ngIf="!match.tournamentId" class="no-tournament">Nessun torneo</span>
+          </span>
+        </div>
+        <div class="detail-row" *ngIf="(match.matchType || 'singolare') === 'doppio' && match.partnerName">
+          <span class="detail-label">Partner:</span>
+          <span class="detail-value">{{ match.partnerName }}</span>
+        </div>
+        <div class="detail-metrics">
+          <div class="metric-item">
+            <lucide-angular name="star" [size]="14"></lucide-angular>
+            <span>Performance: {{ match.performanceScore }}/10</span>
+          </div>
+          <div class="metric-item">
+            <lucide-angular name="flame" [size]="14"></lucide-angular>
+            <span>RPE: 
+              <tp-badge [variant]="getRpeVariant(match.rpe)" class="rpe-badge">
+                {{ match.rpe }}/10
+              </tp-badge>
+            </span>
+          </div>
+          <div class="metric-item">
+            <lucide-angular name="zap" [size]="14"></lucide-angular>
+            <span>Energia: {{ match.energy }}/10</span>
+          </div>
+          <div class="metric-item">
+            <lucide-angular name="target" [size]="14"></lucide-angular>
+            <span>Focus: {{ match.focus }}/10</span>
+          </div>
+        </div>
+        <p class="match-notes" *ngIf="match.notes">{{ match.notes }}</p>
+      </div>
+    </tp-card>
+
+    <tp-empty-state
+      *ngIf="filteredMatches.length === 0 && matches.length > 0"
+      icon="filter"
+      title="Nessuna partita trovata"
+      description="Prova a cambiare il filtro per vedere altre partite">
+    </tp-empty-state>
+
+    <tp-empty-state
+      *ngIf="matches.length === 0"
+      icon="swords"
+      title="Nessuna partita registrata"
+      description="Inizia a tracciare le tue partite per analizzare le performance"
+      actionLabel="Aggiungi Partita"
+      (onAction)="startAdd()">
+    </tp-empty-state>
+  </div>
+</div>
